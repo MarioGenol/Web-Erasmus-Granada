@@ -1,0 +1,131 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}
+	{{ evento['nombre'] }}
+{% endblock %}
+
+{% block sesion %}
+    {% if not user %}
+        <ul class="menu_usuario">
+            <li><a href="../logIn.php">Iniciar Sesión</a></li>
+            <li><a href="../signUp.php">Registrarse</a></li>
+        </ul>
+    {% else %}
+        <ul class="menu_usuario">
+            <li><a id="logOut" href="../logOut.php">Salir</a></li>
+            <li><a id="panelControl">Panel de Control</a>
+                <ul>
+                    <li><a id="modifyUsr" href="../modificaUsr.php">Datos Personales</a></li>
+                    {% if user['rango'] == 'superusuario' %}
+                        <li><a href="../modificarRangos.php">Modificar Rangos</a></li>
+                    {% endif %}
+                    {% if user['rango'] == 'superusuario' or user['rango'] == 'gestor'%}
+                        <li><a href="../eventosPublicados.php">Gestión Eventos</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li><strong id="nombreUsuario">{{ user['nick'] }}</strong></li>
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block central %}
+    <div id="cuerpo_principal">
+		<aside class="menu_vertical">
+                <ul>
+                    <li><a id ="enlace_transporte" href="http://www.granadadirect.com/transporte/metropolitano-granada/"> Transporte Granada</a></li>
+                    <li><a id ="enlace_futbol" href="https://www.granadacf.es/entradas/entradas-primer-equipo"> Entradas Granada CF</a></li>
+                <li><a id ="enlace_alhambra" href="https://www.alhambradegranada.org"> Alhambra</a></li>
+                <li><a id ="enlace_turismo" href="http://www.turgranada.es"> Turismo</a></li>
+                </ul>
+        </aside>
+        <section id="contenido_principal">
+            <div id="titulo_evento">
+                <h2>{{ evento['nombre'] }}</h2>
+                <h3>{{ evento['fecha'] }}</h3>
+                <h4>{{ evento['lugar'] }}</h4>
+		        <h5>Publicado el {{ evento['fecha_pub'] }}</h5>
+            </div>
+
+            <div id="imagenes_evento">
+				<img id="imagen_evento1" src="{{ evento['img1'] }}" alt="catedral">{{ evento['img1text'] }}
+				<img id="imagen_evento2" src="{{ evento['img2'] }}" alt="albaicín">{{ evento['img2text'] }}
+			</div>
+
+            <div id="contenido_evento">
+                {{ evento['descripcion'] | raw }}
+            </div>
+
+        </section> 
+        <div id="redes_sociales">
+            <a id="fc" href="https://es-es.facebook.com/"><img id=tw src="images/fb.jpg" alt="Facebook"></a>
+			<a id="tw" href="https://twitter.com/"><img id=tw src="images/tw.jpg" alt="Twitter"></a>
+			<a id="impresora" href="./templates/evento_imprimir.html"><img id=impresora src="images/impresora.jpg" alt="Imprimir"></a>
+        </div>
+
+        <!-- Comentarios -->
+        <button id="button_comments" type = "button" onclick = "Comentarios()">Comentarios</button>
+        <div id="espacio_comentarios">
+            <div id="comentarios_escritos">	
+                {% for comentario in comentarios %}
+                    <div class="comentario">
+                        <div class="nombre_comentario">
+                            <p>{{ comentario['nombre'] }}</p>
+                        </div>
+
+                        <div class="hora_comentario">
+                            <p>{{ comentario['hora'] }}</p>
+                        </div>
+
+                        <div class="texto_comentario">
+                            <p>{{ comentario['texto'] }}</p>
+                        </div>
+                        
+                        {% if user['rango'] == 'moderador' or user['rango'] == 'superusuario' %}
+                        <!--Aquí se modifica mandando la opcion 1 -->
+                        <button id="button_modify_comment" onclick="ModificaComentario({{ loop.index }} -1)">Modificar</button>
+                        <!--Aquí se borra mandando la opcion 2 -->
+                        <form class="borrar_comentario" action="comentarios.php" method="post">
+                            <input type="hidden" value="2" name="operacion"/>
+                            <input type="hidden" value="{{ comentario['indice']}}" name="indice"/>
+                            <input type="hidden" value="{{ comentario['email']}}" name="email"/>
+                            <input type="hidden" value="{{ comentario['fecha']}}" name="fecha"/>
+                            <input type="hidden" value="{{ comentario['hora']}}" name="hora"/>
+                            <input type="hidden" value="{{ comentario['texto']}}" name="comentario"/>
+                            <button id="button_delete_comment" type="submit">Borrar</button> 
+                        </form>
+                        <div class="modifica_comentario">
+                            <form class="modificar_comentario" action="comentarios.php" method="post">
+                                <input type="text" size="50" value="{{ comentario['texto'] }} Editado por {{ user['nick']}}" name="editado"/><br>
+                                <input type="hidden" value="1" name="operacion"/>
+                                <input type="hidden" value="{{ comentario['indice']}}" name="indice"/>
+                                <input type="hidden" value="{{ comentario['email']}}" name="email"/>
+                                <input type="hidden" value="{{ comentario['fecha']}}" name="fecha"/>
+                                <input type="hidden" value="{{ comentario['hora']}}" name="hora"/>
+                                <input type="submit" value="Cambiar Datos"/>
+                            </form>
+                        </div>
+
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+		<!--Campo para rellenar el formulario -->
+            {% if user %}
+            <div id="espacio_formulario">
+                <form id="formulario" name="formulario" action="comentarios.php" method="post">
+                    <input type="hidden" value="0" name="operacion"/>
+                    <input type="hidden" value="{{ evento['indice'] }}" name="indice"/>
+                    <input type="hidden" value="{{ user['nick'] }}" name="nick"/>
+                    <input type="hidden" value="{{ user['email'] }}" name="email"/>
+                    <br>
+                    <input type="text" size="50" name="comentario"/><br>
+                    <br>
+                    <button type="submit">Enviar Comentario</button>
+                </form>
+            </div> 
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

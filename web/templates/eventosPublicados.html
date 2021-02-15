@@ -1,0 +1,26 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}Eventos Publicados{% endblock %}
+
+{% block central %} 
+	<div id="formularioEntrada">
+		{% for evento in eventos %}
+			<form id="PublicarEventos" action="eventosPublicados.php" method="post">
+				<input type="hidden" value="{{evento['nombre']}}" name="nombreEv"/>
+				{{evento['nombre']}}:
+		    	<select name="publicado">
+		    		{% if evento['publicado'] == '1' %}
+		    			<option selected>visible</option>
+	      				<option>no visible</option>
+		    		{% endif %}
+		    		{% if evento['publicado'] == '0' %}
+		    			<option>visible</option>
+	      				<option selected>no visible</option>
+		    		{% endif %}
+		    	</select>
+		    	<input type="submit" value="Modificar">
+		    	<br>
+		    </form>
+		{% endfor %}
+	</div>
+{% endblock %}

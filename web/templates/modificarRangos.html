@@ -1,0 +1,43 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}Rangos de usuarios{% endblock %}
+
+{% block central %} 
+	<div id="formularioEntrada">
+		{% for user in users %}
+			<form id="modificarRangos" action="modificarRangos.php" method="post">
+				<input type="hidden" value="{{user['nick']}}" name="nick"/>
+				{{user['nick']}}:
+		    	<select name="rango">
+		    		{% if user['rango'] == 'registrado' %}
+		    			<option selected>registrado</option>
+	      				<option>moderador</option>
+	      				<option>gestor</option>
+						<option>superusuario</option>
+		    		{% endif %}
+		    		{% if user['rango'] == 'moderador' %}
+		    			<option>registrado</option>
+	      				<option selected>moderador</option>
+	      				<option>gestor</option>
+						<option>superusuario</option>
+		    		{% endif %}
+		    		{% if user['rango'] == 'gestor' %}
+		    			<option>registrado</option>
+	      				<option>moderador</option>
+	      				<option selected>gestor</option>
+						<option>superusuario</option>
+		    		{% endif %}
+		    		{% if user['rango'] == 'superusuario' %}
+		    			<option>registrado</option>
+	      				<option>moderador</option>
+	      				<option>gestor</option>
+						<option selected>superusuario</option>
+		    		{% endif %}
+		    	</select>
+		    	<input type="submit" value="Modificar">
+		    	<br>
+		    </form>
+		{% endfor %}
+	</div>
+{% endblock %}
+

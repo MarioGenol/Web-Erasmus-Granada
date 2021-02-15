@@ -1,0 +1,17 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}Registro{% endblock %}
+
+{% block central %} 
+<div id="formularioEntrada">
+  <form id="Registro" action="signUp.php" method="post">
+    Nombre de usuario: <input type="text" name="nick" /><br>
+    Nombre: <input type="text" name="nombre" /><br>
+    Apellidos: <input type="text" name="apellidos" /><br>
+    Contraseña: <input type="password" name="contraseña" /><br>
+    Email: <input type="text" name="email" /><br>
+    <input type="submit" value="Registrarse" />
+  </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{% block mensaje %}{% endblock %}</title>
+		<meta charset="utf-8" />
+		<meta name="Author" conten="Mario Genol Morales">
+		<meta name="Description" content="Practica 1 SIBW">
+		<link rel="stylesheet" href="css/styles.css"> <!-- Enlazar archivo css -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="templates/javascript/javascript.js"></script>  <!-- Enlazar archivo javascript -->
+		<link rel="icon" type="image/jpeg" href="images/logo.jpeg">  <!-- Favicon -->
+	</head>
+	<body>
+		<header>
+		<div id="cabecera">
+			<a href="../index.php"><img id="logo_erasmus" src="images/logo.jpeg" alt="Logo"></a>
+			<a href="../index.php"><img id="titulo_erasmus" src="images/tipografia.png" alt="Titulo"></a>
+			
+			<nav id="menu_principal">
+            	<a href="../index.php">Inicio</a> 
+            	<a href="#">Sobre Nosotros</a>
+            	<a href="#">Contacto</a> 
+        	</nav>
+
+        	<form id="busqueda_eventos">
+        		<input type="text" id="buscar_evento" placeholder="Buscar Evento" />
+        		<br>
+        		<div id="display"></div>
+        		{% if user['rango'] == 'gestor' or user['rango'] == 'superusuario'%}
+        			<div id="displayOcultos"></div>
+        		{% endif %}
+      		</form>
+
+        	{% block sesion %}{% endblock %}
+		</div>
+		</header>
+	    
+		<main>
+			{% block central %}	
+			{% endblock %}
+		</main>
+	    {% block footer %}
+			<footer>
+				<p>&copyVida Erasmus Granada</p>
+	        		<p>Calle Periodista Daniel Saucedo Aranda, s/n • 18071 Granada </p>
+	       			<p>958 24 28 65 • e-mail: granadaerasmus@gmail.com</p> 
+			</footer>
+		{% endblock %}
+		
+	</body>
+</html>

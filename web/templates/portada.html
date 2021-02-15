@@ -1,0 +1,78 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}
+	Página Principal
+{% endblock %}
+
+{% block sesion %}
+    {% if not user %}
+        <ul class="menu_usuario">
+            <li><a href="../logIn.php">Iniciar Sesión</a></li>
+            <li><a href="../signUp.php">Registrarse</a></li>
+        </ul>
+    {% else %}
+        <ul class="menu_usuario">
+            <li><a id="logOut" href="../logOut.php">Salir</a></li>
+            <li><a id="panelControl">Panel de Control</a>
+                <ul>
+                    <li><a id="modifyUsr" href="../modificaUsr.php">Datos Personales</a></li>
+                    {% if user['rango'] == 'superusuario' %}
+                        <li><a href="../modificarRangos.php">Modificar Rangos</a></li>
+                    {% endif %}
+                    {% if user['rango'] == 'superusuario' or user['rango'] == 'gestor'%}
+                        <li><a href="../eventosPublicados.php">Gestión Eventos</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li><strong id="nombreUsuario">{{ user['nick'] }}</strong></li>
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block central %}
+    <div id="cuerpo_principal">
+
+		  <aside class="menu_vertical">
+        	<ul>
+         		<li><a id ="enlace_transporte" href="http://www.granadadirect.com/transporte/metropolitano-granada/"> Transporte Granada</a></li>
+         		<li><a id ="enlace_futbol" href="https://www.granadacf.es/entradas/entradas-primer-equipo"> Entradas Granada CF</a></li>
+            <li><a id ="enlace_alhambra" href="https://www.alhambradegranada.org"> Alhambra</a></li>
+            <li><a id ="enlace_turismo" href="http://www.turgranada.es"> Turismo</a></li>
+       	 	</ul>
+   	  </aside>
+        
+        <section id="contenido_principal">
+   			<div id="fila1">
+   			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=1"><img class="im" src="images/fiesta.jpg"/> Fiesta</a>
+			</article>
+
+			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=2"><img class="im" src="images/museo.jpg"/> Museos</a>
+			</article>
+
+			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=3"><img class="im" src="images/actividades.jpg"/>Actividades al aire libre</a>
+			</article>
+
+   			</div>
+
+   			<div id="fila2">
+   			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=2"><img class="im" src="images/concierto.jpeg"/> Música</a>
+			</article>
+
+			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=1"><img class="im" src="images/idiomas.jpg"/> Idiomas</a>
+			</article>
+
+			<article class="imagenes">
+				<a class="texto" href="../evento.php?ev=3"><img class="im" src="images/descuentos.jpg"/>  Descuentos para estudiantes</a>
+			</article>
+   				
+   			</div>
+		
+			
+		</section> 
+    </div>
+{% endblock %}

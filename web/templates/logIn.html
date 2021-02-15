@@ -1,0 +1,14 @@
+{% extends "padre.html" %}
+
+{% block mensaje %}Inicio de sesión{% endblock %}
+
+{% block central %} 
+<div id="formularioEntrada">
+  <form id="inicioSesion" action="logIn.php" method="post">
+    Nombre de usuario: <input type="text" name="nick" /><br>
+    Contraseña: <input type="password" name="contraseña" /><br>
+    <input type="submit" value="Iniciar Sesión" />
+  </form>
+</div>
+{% endblock %}
+
